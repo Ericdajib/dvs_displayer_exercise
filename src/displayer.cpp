@@ -5,6 +5,11 @@
 namespace dvs_displayer {
 
     Displayer::Displayer(ros::NodeHandle & nh, ros::NodeHandle nh_private) : nh_(nh) {
+
+        /*在 ros::NodeHandle nh_private 中形式参数已经有值了。因为他是class，而且这个object的初始化不需要参数，因此可以是隐式初始化。
+         * 全写出来就是 Displayer::Displayer(ros::NodeHandle & nh, ros::NodeHandle nh_private = ros::NodeHandle())
+         */
+
         // Get parameters of display method
         std::string display_method_str;
 
@@ -24,6 +29,8 @@ namespace dvs_displayer {
 
         // Set up subscribers and publishers
         event_sub_ = nh_.subscribe("events", 1, &Displayer::eventsCallback, this);
+        //message的指针在这个方法里面被接收，然后传递给回调函数。
+
         image_transport::ImageTransport it_(nh_);
         image_sub_ = it_.subscribe("image", 1, &Displayer::imageCallback, this);
 
